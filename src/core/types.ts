@@ -13,6 +13,7 @@ export type AppId =
   | 'intel'
   | 'firewall'
   | 'directory'
+  | 'notes'
 
 export interface Track {
   id: string

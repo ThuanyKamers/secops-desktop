@@ -187,3 +187,8 @@ dd { margin: 0; overflow-wrap: anywhere; }
   .siem-fields { width: auto; border-right: 0; }
 }
 .grid td.mono { white-space: nowrap; }
+
+/* Notes */
+.notes-app { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 0; }
+.notes-area { flex: 1; resize: none; border: 0; border-radius: 0; padding: 14px 16px; line-height: 1.55; background: var(--bg); outline: none; min-height: 200px; }
+.notes-bar { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-top: 1px solid var(--line); background: var(--bg-2); }

@@ -23,6 +23,7 @@ export const ui = {
     intel: 'Threat Intel',
     firewall: 'Pare-feu',
     directory: 'Annuaire',
+    notes: 'Bloc-notes',
   },
   window: { close: 'Fermer', minimize: 'Réduire', maximize: 'Agrandir' },
   taskbar: { start: 'Démarrer', logout: 'Se déconnecter', language: 'Langue' },
@@ -140,6 +141,13 @@ export const ui = {
     retry: 'Refaire la mission',
     done: 'Fait',
     missed: 'Manqué',
+  },
+  notes: {
+    placeholder: 'Notez les IP, identifiants, heures et tout ce que vous trouvez. Les notes sont enregistrées dans ce navigateur.',
+    clear: 'Effacer',
+    confirmClear: 'Cliquez à nouveau pour tout effacer.',
+    saved: 'Enregistré',
+    chars: '{{count}} caractères',
   },
   wikiNav: 'Pages',
 }

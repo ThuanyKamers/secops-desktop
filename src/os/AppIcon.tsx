@@ -7,6 +7,7 @@ const ICONS: Record<AppId, { bg: string; path: string }> = {
   siem: { bg: 'linear-gradient(135deg,#10b981,#047857)', path: 'M10 2a8 8 0 0 1 6.3 12.9l5.4 5.4-1.4 1.4-5.4-5.4A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM6 11h2v3H6v-3zm3-3h2v6H9V8zm3 2h2v4h-2v-4z' },
   intel: { bg: 'linear-gradient(135deg,#f59e0b,#b45309)', path: 'M12 4C6.5 4 2.7 8.4 1.5 12c1.2 3.6 5 8 10.5 8s9.3-4.4 10.5-8C21.3 8.4 17.5 4 12 4zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z' },
   firewall: { bg: 'linear-gradient(135deg,#f97316,#c2410c)', path: 'M3 4h18v4H3V4zm0 6h8v4H3v-4zm10 0h8v4h-8v-4zM3 16h18v4H3v-4zM9 4v4M15 16v4' },
+  notes: { bg: 'linear-gradient(135deg,#facc15,#ca8a04)', path: 'M5 3h11l3 3v15H5V3zm3 5v1.5h8V8H8zm0 3.5V13h8v-1.5H8zm0 3.5v1.5h5V15H8z' },
   directory: { bg: 'linear-gradient(135deg,#64748b,#334155)', path: 'M9 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm-7 9c0-3.9 3.1-7 7-7s7 3.1 7 7H2zm15.5-9a3 3 0 1 0 0-6v6zm1.3 2.2A6.9 6.9 0 0 1 22 20h-4.2c0-2.7-1-5.1-2.6-6.8.9-.3 1.9-.2 3.6 0z' },
 }
 
