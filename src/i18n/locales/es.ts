@@ -23,6 +23,7 @@ export const ui = {
     intel: 'Threat Intel',
     firewall: 'Firewall',
     directory: 'Directorio',
+    notes: 'Bloc de notas',
   },
   window: { close: 'Cerrar', minimize: 'Minimizar', maximize: 'Maximizar' },
   taskbar: { start: 'Inicio', logout: 'Cerrar sesión', language: 'Idioma' },
@@ -140,6 +141,13 @@ export const ui = {
     retry: 'Repetir misión',
     done: 'Hecho',
     missed: 'Faltó',
+  },
+  notes: {
+    placeholder: 'Apunta IPs, usuarios, horas y todo lo que encuentres. Las notas se guardan en este navegador.',
+    clear: 'Borrar',
+    confirmClear: 'Haz clic otra vez para borrarlo todo.',
+    saved: 'Guardado',
+    chars: '{{count}} caracteres',
   },
   wikiNav: 'Páginas',
 }

@@ -43,6 +43,8 @@ interface GameState {
   wikiPage: string | null
   run: MissionRun | null
   completed: Record<string, number>
+  notes: string
+  setNotes: (v: string) => void
 
   setLang: (l: Lang) => void
   chooseOs: (os: OsId) => void
@@ -80,6 +82,7 @@ const DEFAULT_SIZE: Partial<Record<AppId, { w: number; h: number }>> = {
   intel: { w: 640, h: 520 },
   firewall: { w: 640, h: 480 },
   directory: { w: 760, h: 500 },
+  notes: { w: 460, h: 440 },
 }
 
 function fitWindow(app: AppId, index: number) {
@@ -108,6 +111,8 @@ export const useGame = create<GameState>()(
       wikiPage: null,
       run: null,
       completed: {},
+      notes: '',
+      setNotes: (notes) => set({ notes }),
 
       setLang: (lang) => set({ lang }),
       chooseOs: (os) => set({ os, phase: 'intro' }),
@@ -275,7 +280,7 @@ export const useGame = create<GameState>()(
           }
         }
       }),
-      partialize: (s) => ({ os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
+      partialize: (s) => ({ notes: s.notes, os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
     },
   ),
 )

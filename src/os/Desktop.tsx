@@ -7,7 +7,7 @@ import { APP_COMPONENTS } from '../apps'
 import { AppIcon } from './AppIcon'
 import { Window } from './Window'
 
-const ALL_APPS: AppId[] = ['missions', 'wiki', 'soc', 'siem', 'intel', 'firewall', 'directory']
+const ALL_APPS: AppId[] = ['missions', 'wiki', 'soc', 'siem', 'intel', 'firewall', 'directory', 'notes']
 
 function useClock() {
   const [now, setNow] = useState(() => new Date())
