@@ -22,6 +22,6 @@ export const BASE_EMPLOYEES: Employee[] = [
 export const CONTACTS: Contact[] = [
   { id: 'a.silva', name: 'Ana Silva', roleKey: 'roles.l1', online: true },
   { id: 'm.lindqvist', name: 'Mara Lindqvist', roleKey: 'roles.l2', online: true },
-  { id: 'k.watanabe', name: 'Kenji Watanabe', roleKey: 'roles.engineer', online: true },
+  { id: 't.kamers', name: 'Thuany Kamers', roleKey: 'roles.engineer', online: true },
   { id: 'p.nair', name: 'Priya Nair', roleKey: 'roles.manager', online: false },
 ]

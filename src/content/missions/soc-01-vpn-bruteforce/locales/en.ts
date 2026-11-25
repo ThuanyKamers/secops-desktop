@@ -41,7 +41,7 @@ A new **high** severity alert just landed in the queue. Handle it following our 
 - Who to call: [Escalation matrix](#escalation)
 - What goes in the report: [Writing a case report](#reporting)
 
-Your team today: **Mara Lindqvist** (L2 on shift), **Kenji Watanabe** (SOC Engineer) and **Ana Silva** (L1, working on another alert). **Priya Nair** (SOC Manager) is in meetings all morning.
+Your team today: **Mara Lindqvist** (L2 on shift), **Thuany Kamers** (SOC Engineer) and **Ana Silva** (L1, working on another alert). **Priya Nair** (SOC Manager) is in meetings all morning.
 
 Open the **SOC Dashboard** to begin.`,
     },
@@ -106,7 +106,7 @@ Fill the case report with the 5 Ws. See [Writing a case report](#reporting).`,
     escalate: 'Escalate to',
     noEscalation: 'No escalation: close the alert',
     toL2: 'Mara Lindqvist (L2 on shift)',
-    toEngineer: 'Kenji Watanabe (SOC Engineer)',
+    toEngineer: 'Thuany Kamers (SOC Engineer)',
     toManager: 'Priya Nair (SOC Manager)',
   },
   grade: {

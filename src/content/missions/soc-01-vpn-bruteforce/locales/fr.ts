@@ -41,7 +41,7 @@ Une nouvelle alerte de sévérité **élevée** vient d’arriver dans la file. 
 - Qui contacter : [Matrice d’escalade](#escalation)
 - Ce que contient le rapport : [Rédiger un rapport d’incident](#reporting)
 
-Votre équipe aujourd’hui : **Mara Lindqvist** (N2 d’astreinte), **Kenji Watanabe** (ingénieur SOC) et **Ana Silva** (N1, sur une autre alerte). **Priya Nair** (responsable SOC) est en réunion toute la matinée.
+Votre équipe aujourd’hui : **Mara Lindqvist** (N2 d’astreinte), **Thuany Kamers** (ingénieur SOC) et **Ana Silva** (N1, sur une autre alerte). **Priya Nair** (responsable SOC) est en réunion toute la matinée.
 
 Ouvrez le **Tableau de bord SOC** pour commencer.`,
     },
@@ -106,7 +106,7 @@ Remplissez le rapport d’incident avec les 5 W. Voir [Rédiger un rapport d’i
     escalate: 'Escalader à',
     noEscalation: 'Pas d’escalade : fermer l’alerte',
     toL2: 'Mara Lindqvist (N2 d’astreinte)',
-    toEngineer: 'Kenji Watanabe (ingénieur SOC)',
+    toEngineer: 'Thuany Kamers (ingénieur SOC)',
     toManager: 'Priya Nair (responsable SOC)',
   },
   grade: {

@@ -41,7 +41,7 @@ Um novo alerta de severidade **alta** acabou de chegar na fila. Trate-o seguindo
 - Quem acionar: [Matriz de escalonamento](#escalation)
 - O que vai no relatório: [Como escrever um relatório](#reporting)
 
-Sua equipe hoje: **Mara Lindqvist** (N2 de plantão), **Kenji Watanabe** (Engenheiro SOC) e **Ana Silva** (N1, trabalhando em outro alerta). **Priya Nair** (Gerente do SOC) está em reuniões a manhã toda.
+Sua equipe hoje: **Mara Lindqvist** (N2 de plantão), **Thuany Kamers** (Engenheiro SOC) e **Ana Silva** (N1, trabalhando em outro alerta). **Priya Nair** (Gerente do SOC) está em reuniões a manhã toda.
 
 Abra o **Painel do SOC** para começar.`,
     },
@@ -106,7 +106,7 @@ Preencha o relatório do caso com os 5 Ws. Veja [Como escrever um relatório](#r
     escalate: 'Escalar para',
     noEscalation: 'Sem escalonamento: fechar o alerta',
     toL2: 'Mara Lindqvist (N2 de plantão)',
-    toEngineer: 'Kenji Watanabe (Engenheiro SOC)',
+    toEngineer: 'Thuany Kamers (Engenheiro SOC)',
     toManager: 'Priya Nair (Gerente do SOC)',
   },
   grade: {

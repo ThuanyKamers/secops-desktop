@@ -41,7 +41,7 @@ Acaba de llegar a la cola una nueva alerta de severidad **alta**. Trátala sigui
 - A quién llamar: [Matriz de escalado](#escalation)
 - Qué va en el informe: [Cómo redactar un informe](#reporting)
 
-Tu equipo hoy: **Mara Lindqvist** (N2 de guardia), **Kenji Watanabe** (Ingeniero SOC) y **Ana Silva** (N1, trabajando en otra alerta). **Priya Nair** (Responsable del SOC) está en reuniones toda la mañana.
+Tu equipo hoy: **Mara Lindqvist** (N2 de guardia), **Thuany Kamers** (Ingeniero SOC) y **Ana Silva** (N1, trabajando en otra alerta). **Priya Nair** (Responsable del SOC) está en reuniones toda la mañana.
 
 Abre el **Panel del SOC** para empezar.`,
     },
@@ -106,7 +106,7 @@ Rellena el informe del caso con las 5 W. Ver [Cómo redactar un informe](#report
     escalate: 'Escalar a',
     noEscalation: 'Sin escalado: cerrar la alerta',
     toL2: 'Mara Lindqvist (N2 de guardia)',
-    toEngineer: 'Kenji Watanabe (Ingeniero SOC)',
+    toEngineer: 'Thuany Kamers (Ingeniero SOC)',
     toManager: 'Priya Nair (Responsable del SOC)',
   },
   grade: {

@@ -181,7 +181,7 @@ export const soc01: Mission = {
     { id: 'escalate_to', kind: 'select', labelKey: 'report.escalate', options: [
       { value: '', labelKey: 'report.noEscalation' },
       { value: 'm.lindqvist', labelKey: 'report.toL2' },
-      { value: 'k.watanabe', labelKey: 'report.toEngineer' },
+      { value: 't.kamers', labelKey: 'report.toEngineer' },
       { value: 'p.nair', labelKey: 'report.toManager' },
     ] },
   ],

@@ -41,7 +41,7 @@ Gerade ist ein neuer Alarm mit Schweregrad **hoch** in der Warteschlange gelande
 - Wen man kontaktiert: [Eskalationsmatrix](#escalation)
 - Was in den Bericht gehört: [Einen Fallbericht schreiben](#reporting)
 
-Dein Team heute: **Mara Lindqvist** (L2 im Dienst), **Kenji Watanabe** (SOC Engineer) und **Ana Silva** (L1, arbeitet an einem anderen Alarm). **Priya Nair** (SOC-Managerin) ist den ganzen Vormittag in Meetings.
+Dein Team heute: **Mara Lindqvist** (L2 im Dienst), **Thuany Kamers** (SOC Engineer) und **Ana Silva** (L1, arbeitet an einem anderen Alarm). **Priya Nair** (SOC-Managerin) ist den ganzen Vormittag in Meetings.
 
 Öffne das **SOC-Dashboard**, um zu beginnen.`,
     },
@@ -106,7 +106,7 @@ Fülle den Fallbericht mit den 5 W aus. Siehe [Einen Fallbericht schreiben](#rep
     escalate: 'Eskalieren an',
     noEscalation: 'Keine Eskalation: Alarm schließen',
     toL2: 'Mara Lindqvist (L2 im Dienst)',
-    toEngineer: 'Kenji Watanabe (SOC Engineer)',
+    toEngineer: 'Thuany Kamers (SOC Engineer)',
     toManager: 'Priya Nair (SOC-Managerin)',
   },
   grade: {
