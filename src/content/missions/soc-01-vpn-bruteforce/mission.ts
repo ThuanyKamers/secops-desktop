@@ -99,8 +99,8 @@ function data(): MissionData {
     alerts: [
       { id: ALERT_ID, titleKey: 'alerts.a2041.title', descKey: 'alerts.a2041.desc', severity: 'high', time: t('08:12:00'), source: 'VPN Gateway (vpn-gw-01)', status: 'new', isMissionAlert: true },
       { id: 'ALR-2042', titleKey: 'alerts.a2042.title', descKey: 'alerts.a2042.desc', severity: 'low', time: t('08:15:20'), source: 'EDR', status: 'new' },
-      { id: 'ALR-2038', titleKey: 'alerts.a2038.title', descKey: 'alerts.a2038.desc', severity: 'medium', time: t('07:40:11'), source: 'Proxy (proxy-01)', status: 'in_progress', assignee: 'a.silva' },
-      { id: 'ALR-2035', titleKey: 'alerts.a2035.title', descKey: 'alerts.a2035.desc', severity: 'low', time: t('06:55:47'), source: 'Print server', status: 'closed', assignee: 'a.silva', verdict: 'false_positive' },
+      { id: 'ALR-2038', titleKey: 'alerts.a2038.title', descKey: 'alerts.a2038.desc', severity: 'medium', time: t('07:40:11'), source: 'Proxy (proxy-01)', status: 'in_progress', assignee: 'd.amorim' },
+      { id: 'ALR-2035', titleKey: 'alerts.a2035.title', descKey: 'alerts.a2035.desc', severity: 'low', time: t('06:55:47'), source: 'Print server', status: 'closed', assignee: 'd.amorim', verdict: 'false_positive' },
     ],
     logs: buildLogs(employees),
     intel: [
@@ -143,7 +143,7 @@ function grade(s: GameSnapshot): GradeResult {
     { id: 'lock', points: 2, key: 'grade.lock', ok: !!victim?.locked },
     { id: 'noWrongLock', points: 1, key: 'grade.noWrongLock', ok: wrongLocks.length === 0 },
     { id: 'verdict', points: 2, key: 'grade.verdict', ok: rep.verdict === 'true_positive' || alert?.verdict === 'true_positive' },
-    { id: 'escalate', points: 2, key: 'grade.escalate', ok: rep.escalate_to === 'm.lindqvist' },
+    { id: 'escalate', points: 2, key: 'grade.escalate', ok: rep.escalate_to === 'l.sagas' },
     { id: 'who', points: 1, key: 'grade.who', ok: /moreau/.test(norm(rep.who)) },
     { id: 'where', points: 1, key: 'grade.where', ok: norm(rep.attacker_ip).includes(ATTACKER) },
     { id: 'when', points: 1, key: 'grade.when', ok: timeOk(rep.start_time, ['08:07']) && timeOk(rep.end_time, ['08:10', '08:11', '08:12']) },
@@ -180,7 +180,7 @@ export const soc01: Mission = {
     { id: 'summary', kind: 'textarea', labelKey: 'report.summary', hintKey: 'report.summaryHint' },
     { id: 'escalate_to', kind: 'select', labelKey: 'report.escalate', options: [
       { value: '', labelKey: 'report.noEscalation' },
-      { value: 'm.lindqvist', labelKey: 'report.toL2' },
+      { value: 'l.sagas', labelKey: 'report.toL2' },
       { value: 't.kamers', labelKey: 'report.toEngineer' },
       { value: 'p.nair', labelKey: 'report.toManager' },
     ] },

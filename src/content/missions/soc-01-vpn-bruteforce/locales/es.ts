@@ -41,7 +41,7 @@ Acaba de llegar a la cola una nueva alerta de severidad **alta**. Trátala sigui
 - A quién llamar: [Matriz de escalado](#escalation)
 - Qué va en el informe: [Cómo redactar un informe](#reporting)
 
-Tu equipo hoy: **Mara Lindqvist** (N2 de guardia), **Thuany Kamers** (Ingeniero SOC) y **Ana Silva** (N1, trabajando en otra alerta). **Priya Nair** (Responsable del SOC) está en reuniones toda la mañana.
+Tu equipo hoy: **Lucas Sagás** (N2 de guardia), **Thuany Kamers** (Ingeniero SOC) y **Davi Amorim** (N1, trabajando en otra alerta). **Priya Nair** (Responsable del SOC) está en reuniones toda la mañana.
 
 Abre el **Panel del SOC** para empezar.`,
     },
@@ -105,7 +105,7 @@ Rellena el informe del caso con las 5 W. Ver [Cómo redactar un informe](#report
     summaryHint: 'Explícalo para que el N2 entienda el caso en un minuto.',
     escalate: 'Escalar a',
     noEscalation: 'Sin escalado: cerrar la alerta',
-    toL2: 'Mara Lindqvist (N2 de guardia)',
+    toL2: 'Lucas Sagás (N2 de guardia)',
     toEngineer: 'Thuany Kamers (Ingeniero SOC)',
     toManager: 'Priya Nair (Responsable del SOC)',
   },
@@ -119,7 +119,7 @@ Rellena el informe del caso con las 5 W. Ver [Cómo redactar un informe](#report
     lock: { label: 'Bloqueaste la cuenta comprometida l.moreau.', tip: 'El atacante entró como l.moreau a las 08:10:48. Bloquear la cuenta cierra esa sesión VPN.' },
     noWrongLock: { label: 'No bloqueaste cuentas sin evidencia.', tip: 'Solo había que bloquear la cuenta con un inicio de sesión malicioso correcto.' },
     verdict: { label: 'Veredicto: verdadero positivo.', tip: 'Cientos de fallos desde una IP maliciosa seguidos de un éxito es un ataque real.' },
-    escalate: { label: 'Escalaste al N2 de guardia.', tip: 'Un inicio de sesión correcto del atacante es un compromiso: escala a Mara Lindqvist (N2), según la matriz de escalado.' },
+    escalate: { label: 'Escalaste al N2 de guardia.', tip: 'Un inicio de sesión correcto del atacante es un compromiso: escala a Lucas Sagás (N2), según la matriz de escalado.' },
     who: { label: 'Quién: la cuenta afectada aparece en el informe.', tip: 'El informe debe nombrar la cuenta comprometida (l.moreau / Lucas Moreau).' },
     where: { label: 'Dónde: la IP del atacante está en el informe.', tip: 'Incluye la IP de origen 203.0.113.45 como IOC.' },
     when: { label: 'Cuándo: la ventana de tiempo es correcta.', tip: 'El ataque fue de 08:07:02 (primer intento de spraying) al inicio de sesión correcto a las 08:10:48.' },

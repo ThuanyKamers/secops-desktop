@@ -41,7 +41,7 @@ Une nouvelle alerte de sévérité **élevée** vient d’arriver dans la file. 
 - Qui contacter : [Matrice d’escalade](#escalation)
 - Ce que contient le rapport : [Rédiger un rapport d’incident](#reporting)
 
-Votre équipe aujourd’hui : **Mara Lindqvist** (N2 d’astreinte), **Thuany Kamers** (ingénieur SOC) et **Ana Silva** (N1, sur une autre alerte). **Priya Nair** (responsable SOC) est en réunion toute la matinée.
+Votre équipe aujourd’hui : **Lucas Sagás** (N2 d’astreinte), **Thuany Kamers** (ingénieur SOC) et **Davi Amorim** (N1, sur une autre alerte). **Priya Nair** (responsable SOC) est en réunion toute la matinée.
 
 Ouvrez le **Tableau de bord SOC** pour commencer.`,
     },
@@ -105,7 +105,7 @@ Remplissez le rapport d’incident avec les 5 W. Voir [Rédiger un rapport d’i
     summaryHint: 'Expliquez-le pour que le N2 comprenne le dossier en une minute.',
     escalate: 'Escalader à',
     noEscalation: 'Pas d’escalade : fermer l’alerte',
-    toL2: 'Mara Lindqvist (N2 d’astreinte)',
+    toL2: 'Lucas Sagás (N2 d’astreinte)',
     toEngineer: 'Thuany Kamers (ingénieur SOC)',
     toManager: 'Priya Nair (responsable SOC)',
   },
@@ -119,7 +119,7 @@ Remplissez le rapport d’incident avec les 5 W. Voir [Rédiger un rapport d’i
     lock: { label: 'Vous avez verrouillé le compte compromis l.moreau.', tip: 'L’attaquant s’est connecté en tant que l.moreau à 08:10:48. Verrouiller le compte met fin à cette session VPN.' },
     noWrongLock: { label: 'Vous n’avez pas verrouillé de comptes sans preuve.', tip: 'Seul le compte avec une connexion malveillante réussie devait être verrouillé.' },
     verdict: { label: 'Verdict : vrai positif.', tip: 'Des centaines d’échecs depuis une IP malveillante suivis d’une réussite, c’est une vraie attaque.' },
-    escalate: { label: 'Vous avez escaladé au N2 d’astreinte.', tip: 'Une connexion réussie de l’attaquant est une compromission : escaladez à Mara Lindqvist (N2), selon la matrice d’escalade.' },
+    escalate: { label: 'Vous avez escaladé au N2 d’astreinte.', tip: 'Une connexion réussie de l’attaquant est une compromission : escaladez à Lucas Sagás (N2), selon la matrice d’escalade.' },
     who: { label: 'Qui : le compte concerné est nommé.', tip: 'Le rapport doit nommer le compte compromis (l.moreau / Lucas Moreau).' },
     where: { label: 'Où : l’IP de l’attaquant figure dans le rapport.', tip: 'Ajoutez l’IP source 203.0.113.45 comme IOC.' },
     when: { label: 'Quand : la fenêtre temporelle est correcte.', tip: 'L’attaque a duré de 08:07:02 (première tentative de spraying) à la connexion réussie de 08:10:48.' },
