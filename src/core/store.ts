@@ -1,0 +1,279 @@
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import type {
+  AlertStatus,
+  AppId,
+  GameEvent,
+  GradeResult,
+  Lang,
+  MissionData,
+  OsId,
+  Verdict,
+} from './types'
+import { getMission } from '../content'
+
+export const PLAYER = 'you'
+
+export interface WindowState {
+  app: AppId
+  z: number
+  minimized: boolean
+  maximized: boolean
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+interface MissionRun {
+  missionId: string
+  data: MissionData
+  events: GameEvent[]
+  report: Record<string, string>
+  escalatedTo?: string
+  result?: GradeResult
+}
+
+interface GameState {
+  os: OsId | null
+  lang: Lang
+  phase: 'boot' | 'login' | 'desktop'
+  windows: WindowState[]
+  zTop: number
+  wikiPage: string | null
+  run: MissionRun | null
+  completed: Record<string, number>
+
+  setLang: (l: Lang) => void
+  chooseOs: (os: OsId) => void
+  login: () => void
+  logout: () => void
+
+  openApp: (app: AppId) => void
+  closeApp: (app: AppId) => void
+  focusApp: (app: AppId) => void
+  toggleMin: (app: AppId) => void
+  toggleMax: (app: AppId) => void
+  moveApp: (app: AppId, x: number, y: number) => void
+
+  openWiki: (page: string) => void
+
+  startMission: (id: string) => void
+  abandonMission: () => void
+  log: (e: GameEvent) => void
+  assignAlert: (alertId: string, to: string) => void
+  setAlertStatus: (alertId: string, status: AlertStatus) => void
+  setVerdict: (alertId: string, v: Verdict) => void
+  blockIp: (ip: string) => void
+  unblockIp: (ip: string) => void
+  setLocked: (username: string, locked: boolean) => void
+  setReport: (field: string, value: string) => void
+  submitReport: () => GradeResult | null
+}
+
+const DEFAULT_SIZE: Partial<Record<AppId, { w: number; h: number }>> = {
+  missions: { w: 760, h: 520 },
+  wiki: { w: 720, h: 560 },
+  soc: { w: 960, h: 600 },
+  siem: { w: 1000, h: 620 },
+  intel: { w: 640, h: 520 },
+  firewall: { w: 640, h: 480 },
+  directory: { w: 760, h: 500 },
+}
+
+function fitWindow(app: AppId, index: number) {
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1280
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+  const size = DEFAULT_SIZE[app] ?? { w: 700, h: 500 }
+  const w = Math.min(size.w, vw - 24)
+  const h = Math.min(size.h, vh - 110)
+  const x = Math.max(8, Math.min(60 + index * 32, vw - w - 8))
+  const y = Math.max(40, Math.min(56 + index * 28, vh - h - 60))
+  return { x, y, w, h }
+}
+
+function mapRun(s: GameState, f: (r: MissionRun) => MissionRun): Partial<GameState> {
+  return s.run ? { run: f(s.run) } : {}
+}
+
+export const useGame = create<GameState>()(
+  persist(
+    (set, get) => ({
+      os: null,
+      lang: 'en',
+      phase: 'boot',
+      windows: [],
+      zTop: 10,
+      wikiPage: null,
+      run: null,
+      completed: {},
+
+      setLang: (lang) => set({ lang }),
+      chooseOs: (os) => set({ os, phase: 'login' }),
+      login: () => {
+        set({ phase: 'desktop' })
+        if (get().windows.length === 0) get().openApp('missions')
+      },
+      logout: () => set({ phase: 'boot', windows: [] }),
+
+      openApp: (app) =>
+        set((s) => {
+          const existing = s.windows.find((w) => w.app === app)
+          const z = s.zTop + 1
+          if (existing) {
+            return {
+              zTop: z,
+              windows: s.windows.map((w) => (w.app === app ? { ...w, z, minimized: false } : w)),
+            }
+          }
+          return {
+            zTop: z,
+            windows: [
+              ...s.windows,
+              { app, z, minimized: false, maximized: false, ...fitWindow(app, s.windows.length) },
+            ],
+          }
+        }),
+      closeApp: (app) => set((s) => ({ windows: s.windows.filter((w) => w.app !== app) })),
+      focusApp: (app) =>
+        set((s) => {
+          const top = s.windows.find((w) => w.app === app)
+          if (top && top.z === s.zTop) return {}
+          const z = s.zTop + 1
+          return { zTop: z, windows: s.windows.map((w) => (w.app === app ? { ...w, z } : w)) }
+        }),
+      toggleMin: (app) =>
+        set((s) => {
+          const target = s.windows.find((w) => w.app === app)
+          if (!target) return {}
+          // clicking the taskbar on a background window brings it forward instead of hiding it
+          if (!target.minimized && target.z !== s.zTop) {
+            const z = s.zTop + 1
+            return { zTop: z, windows: s.windows.map((w) => (w.app === app ? { ...w, z } : w)) }
+          }
+          const z = s.zTop + 1
+          return {
+            zTop: z,
+            windows: s.windows.map((w) =>
+              w.app === app ? { ...w, minimized: !w.minimized, z: w.minimized ? z : w.z } : w,
+            ),
+          }
+        }),
+      toggleMax: (app) =>
+        set((s) => ({
+          windows: s.windows.map((w) => (w.app === app ? { ...w, maximized: !w.maximized } : w)),
+        })),
+      moveApp: (app, x, y) =>
+        set((s) => ({ windows: s.windows.map((w) => (w.app === app ? { ...w, x, y } : w)) })),
+
+      openWiki: (page) => {
+        set({ wikiPage: page })
+        get().openApp('wiki')
+        get().log({ type: 'wiki.open', page })
+      },
+
+      startMission: (id) => {
+        const m = getMission(id)
+        if (!m) return
+        set({
+          run: { missionId: id, data: m.data(), events: [], report: {} },
+          windows: get().windows.filter((w) => w.app === 'missions'),
+        })
+        get().openWiki(m.startPage)
+      },
+      abandonMission: () => set({ run: null, windows: get().windows.filter((w) => w.app === 'missions') }),
+
+      log: (e) => set((s) => mapRun(s, (r) => ({ ...r, events: [...r.events, e] }))),
+
+      assignAlert: (alertId, to) => {
+        set((s) =>
+          mapRun(s, (r) => ({
+            ...r,
+            escalatedTo: to !== PLAYER && r.data.alerts.find((a) => a.id === alertId)?.isMissionAlert ? to : r.escalatedTo,
+            data: {
+              ...r.data,
+              alerts: r.data.alerts.map((a) => (a.id === alertId ? { ...a, assignee: to } : a)),
+            },
+          })),
+        )
+        get().log({ type: 'alert.assign', alertId, to })
+      },
+      setAlertStatus: (alertId, status) => {
+        set((s) =>
+          mapRun(s, (r) => ({
+            ...r,
+            data: { ...r.data, alerts: r.data.alerts.map((a) => (a.id === alertId ? { ...a, status } : a)) },
+          })),
+        )
+        get().log({ type: 'alert.status', alertId, status })
+      },
+      setVerdict: (alertId, verdict) =>
+        set((s) =>
+          mapRun(s, (r) => ({
+            ...r,
+            data: { ...r.data, alerts: r.data.alerts.map((a) => (a.id === alertId ? { ...a, verdict } : a)) },
+          })),
+        ),
+      blockIp: (ip) => {
+        set((s) =>
+          mapRun(s, (r) =>
+            r.data.blockedIps.includes(ip) ? r : { ...r, data: { ...r.data, blockedIps: [...r.data.blockedIps, ip] } },
+          ),
+        )
+        get().log({ type: 'fw.block', ip })
+      },
+      unblockIp: (ip) => {
+        set((s) =>
+          mapRun(s, (r) => ({ ...r, data: { ...r.data, blockedIps: r.data.blockedIps.filter((x) => x !== ip) } })),
+        )
+        get().log({ type: 'fw.unblock', ip })
+      },
+      setLocked: (username, locked) => {
+        set((s) =>
+          mapRun(s, (r) => ({
+            ...r,
+            data: {
+              ...r.data,
+              employees: r.data.employees.map((e) => (e.username === username ? { ...e, locked } : e)),
+            },
+          })),
+        )
+        get().log({ type: locked ? 'dir.lock' : 'dir.unlock', username })
+      },
+      setReport: (field, value) => set((s) => mapRun(s, (r) => ({ ...r, report: { ...r.report, [field]: value } }))),
+      submitReport: () => {
+        const r = get().run
+        if (!r) return null
+        const m = getMission(r.missionId)
+        if (!m) return null
+        const result = m.grade({ data: r.data, events: r.events, report: r.report, me: PLAYER })
+        const pct = Math.round((result.score / result.max) * 100)
+        set((s) => ({
+          run: s.run ? { ...s.run, result } : null,
+          completed: { ...s.completed, [r.missionId]: Math.max(pct, s.completed[r.missionId] ?? 0) },
+        }))
+        return result
+      },
+    }),
+    {
+      name: 'secops-desktop',
+      version: 1,
+      storage: createJSONStorage(() => {
+        try {
+          const k = '__probe__'
+          localStorage.setItem(k, k)
+          localStorage.removeItem(k)
+          return localStorage
+        } catch {
+          const mem = new Map<string, string>()
+          return {
+            getItem: (k: string) => mem.get(k) ?? null,
+            setItem: (k: string, v: string) => void mem.set(k, v),
+            removeItem: (k: string) => void mem.delete(k),
+          }
+        }
+      }),
+      partialize: (s) => ({ os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
+    },
+  ),
+)

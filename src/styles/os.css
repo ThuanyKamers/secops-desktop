@@ -1,0 +1,174 @@
+/* ---------- wallpapers & per-OS tokens ---------- */
+.os-windows {
+  --font: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+  --accent: #0067c0;
+  --radius: 8px;
+  background: radial-gradient(900px 500px at 70% 60%, #4aa3ff 0%, transparent 60%), linear-gradient(135deg, #0a2a6b, #1557c0 50%, #7bb4ff);
+}
+.os-macos {
+  --font: -apple-system, 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
+  --accent: #007aff;
+  --radius: 10px;
+  background: radial-gradient(800px 600px at 20% 30%, #f6a56b88, transparent 60%), linear-gradient(135deg, #3b1f6e, #a3407f 50%, #f08a5d);
+}
+.os-linux {
+  --font: 'Ubuntu', 'Cantarell', 'Noto Sans', system-ui, sans-serif;
+  --accent: #e95420;
+  --accent-fg: #fff;
+  --radius: 12px;
+  --bg: #2b2b2b;
+  --bg-2: #333333;
+  --bg-3: #3d3d3d;
+  --fg: #f2f2f2;
+  --fg-2: #b5b5b5;
+  --line: #4a4a4a;
+  --danger: #e5484d;
+  --ok: #4cc38a;
+  --warn: #f5a524;
+  color-scheme: dark;
+  background: radial-gradient(900px 600px at 80% 20%, #e9542055, transparent 60%), linear-gradient(135deg, #2c001e, #5e1953 55%, #9b2f52);
+}
+.login.os-windows, .login.os-macos, .login.os-linux { background-size: cover; }
+
+.desktop { position: fixed; inset: 0; overflow: hidden; font-family: var(--font); }
+
+/* ---------- desktop icons ---------- */
+.desktop-icons {
+  position: absolute;
+  top: 12px; left: 12px; bottom: 70px;
+  display: flex; flex-direction: column; flex-wrap: wrap; gap: 6px;
+  align-content: flex-start;
+}
+.os-macos .desktop-icons { top: 40px; left: auto; right: 12px; }
+.os-linux .desktop-icons { top: 44px; left: 84px; }
+.desk-icon {
+  width: 86px; padding: 8px 4px; border: 1px solid transparent; border-radius: 6px; background: transparent;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; color: #fff; font-size: 12px; text-shadow: 0 1px 3px #000a;
+}
+.desk-icon:hover, .desk-icon:focus-visible { background: #ffffff26; border-color: #ffffff40; }
+.app-icon { display: inline-grid; place-items: center; border-radius: 22%; box-shadow: 0 1px 3px #0004; flex: none; }
+
+/* ---------- windows ---------- */
+.window {
+  position: absolute;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 50px #0006, 0 0 0 1px #0002;
+  overflow: hidden;
+  min-width: 300px;
+}
+.window.maximized { left: 0 !important; top: 0; width: 100%; height: calc(100% - 48px); border-radius: 0; }
+.os-macos .window.maximized { top: 28px; height: calc(100% - 28px - 78px); }
+.os-linux .window.maximized { top: 32px; left: 72px !important; width: calc(100% - 72px); height: calc(100% - 32px); }
+.win-title {
+  display: flex; align-items: center; gap: 8px;
+  height: 38px; padding: 0 0 0 12px; flex: none;
+  background: var(--bg-2); border-bottom: 1px solid var(--line);
+  user-select: none; touch-action: none; cursor: default;
+}
+.win-name { flex: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.window:not(.focused) .win-title { opacity: 0.85; }
+.win-body { flex: 1; overflow: auto; min-height: 0; }
+.win-controls { display: flex; height: 100%; }
+.wc { border: 0; background: transparent; width: 46px; height: 100%; position: relative; }
+.wc::before { content: ''; position: absolute; inset: 0; margin: auto; }
+/* Windows-style controls */
+.os-windows .wc-min::before { width: 10px; height: 1px; background: var(--fg); }
+.os-windows .wc-max::before { width: 9px; height: 9px; border: 1px solid var(--fg); }
+.os-windows .wc-close::before, .os-windows .wc-close::after { content: ''; position: absolute; inset: 0; margin: auto; width: 13px; height: 1px; background: var(--fg); transform: rotate(45deg); }
+.os-windows .wc-close::after { transform: rotate(-45deg); }
+.os-windows .wc:hover { background: var(--bg-3); }
+.os-windows .wc-close:hover { background: #c42b1c; }
+.os-windows .wc-close:hover::before, .os-windows .wc-close:hover::after { background: #fff; }
+/* macOS traffic lights (left, order: close, min, max) */
+.os-macos .win-title { padding-left: 12px; justify-content: flex-start; }
+.os-macos .win-controls { order: -1; gap: 8px; align-items: center; margin-right: 6px; flex-direction: row-reverse; }
+.os-macos .wc { width: 12px; height: 12px; border-radius: 50%; }
+.os-macos .wc-close { background: #ff5f57; order: 3; }
+.os-macos .wc-min { background: #febc2e; order: 2; }
+.os-macos .wc-max { background: #28c840; order: 1; }
+.os-macos .win-name { text-align: center; padding-right: 70px; font-weight: 600; }
+.os-macos .window:not(.focused) .wc { background: #d0d0d0; }
+/* Linux (GNOME-like) round buttons on the right */
+.os-linux .win-title { background: #303030; height: 44px; }
+.os-linux .win-name { text-align: center; font-weight: 700; }
+.os-linux .win-controls { gap: 8px; align-items: center; padding-right: 10px; }
+.os-linux .wc { width: 24px; height: 24px; border-radius: 50%; background: #444; }
+.os-linux .wc:hover { background: #555; }
+.os-linux .wc-min::before { width: 8px; height: 2px; background: #eee; }
+.os-linux .wc-max::before { width: 8px; height: 8px; border: 2px solid #eee; }
+.os-linux .wc-close::before, .os-linux .wc-close::after { content: ''; position: absolute; inset: 0; margin: auto; width: 10px; height: 2px; background: #eee; transform: rotate(45deg); }
+.os-linux .wc-close::after { transform: rotate(-45deg); }
+
+/* ---------- Windows taskbar ---------- */
+.win-taskbar {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 48px; z-index: 100000;
+  display: flex; align-items: center; justify-content: center; padding: 0 10px;
+  background: #1c2433e6; backdrop-filter: blur(20px); color: #fff; border-top: 1px solid #ffffff1a;
+}
+.tb-center { display: flex; gap: 4px; align-items: center; }
+.tb-right { position: absolute; right: 10px; display: flex; gap: 10px; align-items: center; font-size: 12px; }
+.tb-start, .tb-app { width: 40px; height: 40px; border: 0; border-radius: 6px; background: transparent; display: grid; place-items: center; position: relative; }
+.tb-start:hover, .tb-app:hover { background: #ffffff1a; }
+.tb-app.open::after { content: ''; position: absolute; bottom: 2px; width: 6px; height: 3px; border-radius: 2px; background: #9aa4b2; }
+.tb-app.active { background: #ffffff14; }
+.tb-app.active::after { width: 16px; background: #60cdff; }
+.start-menu {
+  position: absolute; bottom: 58px; left: 50%; transform: translateX(-50%); z-index: 100001;
+  width: min(560px, calc(100% - 24px)); padding: 22px; border-radius: 10px;
+  background: #202a3be8; backdrop-filter: blur(24px); color: #fff; box-shadow: 0 20px 60px #0008;
+}
+.start-apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.start-apps button { border: 0; background: transparent; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px; border-radius: 6px; font-size: 12px; }
+.start-apps button:hover { background: #ffffff1a; }
+.start-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #ffffff22; flex-wrap: wrap; }
+.start-foot button { border: 0; background: transparent; color: #fff; padding: 6px 10px; border-radius: 6px; }
+.start-foot button:hover { background: #ffffff1a; }
+.lang-select { background: transparent; border-color: #ffffff40; color: inherit; padding: 3px 6px; font-size: 12px; }
+.lang-select option { color: #000; }
+.lang-select.compact { border-color: transparent; }
+
+/* ---------- macOS menubar + dock ---------- */
+.menubar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 100000;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 12px; color: #fff; font-size: 13px;
+}
+.mac-menubar { height: 28px; background: #00000033; backdrop-filter: blur(20px); }
+.mb-left, .mb-right { display: flex; align-items: center; gap: 12px; }
+.mb-logo, .mb-power { border: 0; background: transparent; color: inherit; display: grid; place-items: center; padding: 2px 4px; }
+.dock {
+  position: absolute; z-index: 100000; display: flex; gap: 6px; padding: 6px;
+}
+.mac-dock {
+  bottom: 8px; left: 50%; transform: translateX(-50%);
+  background: #ffffff38; backdrop-filter: blur(20px); border: 1px solid #ffffff4d; border-radius: 18px;
+}
+.dock-app { border: 0; background: transparent; padding: 2px; position: relative; transition: transform 0.15s; }
+.mac-dock .dock-app:hover { transform: translateY(-6px) scale(1.1); }
+.dock-app.open::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: #fff; }
+
+/* ---------- Linux topbar + dock ---------- */
+.linux-topbar { height: 32px; background: #000; font-weight: 600; }
+.mb-center { position: absolute; left: 50%; transform: translateX(-50%); }
+.activities { padding: 2px 10px; border-radius: 12px; background: #ffffff1a; }
+.linux-dock {
+  top: 32px; left: 0; bottom: 0; width: 72px; flex-direction: column; align-items: center; padding: 10px 0;
+  background: #1d1d1dee;
+}
+.linux-dock .dock-app { padding: 6px; border-radius: 10px; }
+.linux-dock .dock-app:hover { background: #ffffff1a; }
+.linux-dock .dock-app.open::after { left: 2px; top: 50%; bottom: auto; margin: -3px 0 0; width: 4px; height: 6px; border-radius: 2px; background: #e95420; }
+
+@media (max-width: 760px) {
+  .desktop-icons { flex-direction: row; right: 12px; bottom: auto; }
+  .os-linux .desktop-icons { left: 12px; top: 44px; }
+  .os-macos .desktop-icons { left: 12px; }
+  .window.maximized, .os-linux .window.maximized, .os-macos .window.maximized { left: 0 !important; width: 100%; }
+  .os-linux .linux-dock { top: auto; bottom: 0; width: 100%; height: 58px; flex-direction: row; justify-content: center; padding: 4px; }
+  .os-linux .window.maximized { height: calc(100% - 32px - 58px); }
+  .tb-right { display: none; }
+  .tb-start, .tb-app { width: 36px; }
+  .mac-dock .dock-app .app-icon { width: 36px !important; height: 36px !important; }
+}
