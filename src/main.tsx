@@ -4,6 +4,7 @@ import './i18n'
 import './styles/base.css'
 import './styles/os.css'
 import './styles/apps.css'
+import './styles/intro.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
