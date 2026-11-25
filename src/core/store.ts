@@ -96,6 +96,33 @@ function fitWindow(app: AppId, index: number) {
   return { x, y, w, h }
 }
 
+/**
+ * Saved runs keep the player's progress, but static mission content (team, logs, wiki, intel)
+ * always comes from the current build, so renamed characters or fixed texts show up after an update.
+ */
+export function refreshRun(run: MissionRun | null | undefined): MissionRun | null {
+  if (!run) return null
+  const m = getMission(run.missionId)
+  if (!m) return null
+  const fresh = m.data()
+  const saved = run.data
+  return {
+    ...run,
+    data: {
+      ...fresh,
+      blockedIps: saved?.blockedIps ?? fresh.blockedIps,
+      alerts: fresh.alerts.map((a) => {
+        const old = saved?.alerts?.find((x) => x.id === a.id)
+        return old ? { ...a, assignee: old.assignee, status: old.status, verdict: old.verdict } : a
+      }),
+      employees: fresh.employees.map((e) => {
+        const old = saved?.employees?.find((x) => x.username === e.username)
+        return old ? { ...e, locked: old.locked } : e
+      }),
+    },
+  }
+}
+
 function mapRun(s: GameState, f: (r: MissionRun) => MissionRun): Partial<GameState> {
   return s.run ? { run: f(s.run) } : {}
 }
@@ -280,6 +307,10 @@ export const useGame = create<GameState>()(
           }
         }
       }),
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<GameState>
+        return { ...current, ...p, run: refreshRun(p.run) }
+      },
       partialize: (s) => ({ notes: s.notes, os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
     },
   ),
