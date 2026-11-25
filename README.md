@@ -1,5 +1,7 @@
 # SecOps Desktop
 
+[![CodeQL](https://github.com/ThuanyKamers/secops-desktop/actions/workflows/codeql.yml/badge.svg)](https://github.com/ThuanyKamers/secops-desktop/actions/workflows/codeql.yml) [![Deploy](https://github.com/ThuanyKamers/secops-desktop/actions/workflows/deploy.yml/badge.svg)](https://github.com/ThuanyKamers/secops-desktop/actions/workflows/deploy.yml)
+
 **A browser-based cybersecurity training game.** Pick a Windows, macOS or Linux workstation, sign in, and work real security tasks with the same kind of tools and documentation a security team uses on the job. No arrows on screen: every mission comes with a ticket, a runbook in the internal Wiki, and a graded case report at the end.
 
 ▶ **Play it:** https://thuanykamers.github.io/secops-desktop/
@@ -41,6 +43,15 @@ The game is organised in **tracks** so it can grow beyond the SOC:
 
 - **SOC:** phishing (true and false positives), alert queue prioritisation, data exfiltration and escalation chain, web server log investigation in a Linux terminal, CVE research.
 - **Penetration testing**, **digital forensics**, **cloud security**, **GRC**: coming later.
+
+## Secure development
+
+The project follows a small secure SDLC, so the code is held to the same standard the game teaches:
+
+- **SAST on every change:** [CodeQL](.github/workflows/codeql.yml) scans the TypeScript code and the GitHub Actions workflows with the `security-extended` query suite on every pull request, on every push to `main` and weekly. Findings appear in the repository's Security tab and inline on the pull request.
+- **Protected `main` branch:** changes only land through pull requests, and the CodeQL checks must pass before merging. Force pushes are blocked.
+- **Least-privilege CI:** each workflow job requests only the permissions it needs (`contents: read` by default; `security-events: write` only for uploading scan results; `pages: write` only for deploying).
+- **Tests in the pipeline:** the deploy workflow runs the unit tests before building, so a failing test never reaches the live site.
 
 ## How it works
 
