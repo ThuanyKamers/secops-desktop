@@ -41,7 +41,7 @@ Um novo alerta de severidade **alta** acabou de chegar na fila. Trate-o seguindo
 - Quem acionar: [Matriz de escalonamento](#escalation)
 - O que vai no relatório: [Como escrever um relatório](#reporting)
 
-Sua equipe hoje: **Mara Lindqvist** (N2 de plantão), **Kenji Watanabe** (Engenheiro SOC) e **Ana Silva** (N1, trabalhando em outro alerta). **Priya Nair** (Gerente do SOC) está em reuniões a manhã toda.
+Sua equipe hoje: **Lucas Sagás** (N2 de plantão), **Thuany Kamers** (Engenheiro SOC) e **Davi Amorim** (N1, trabalhando em outro alerta). **Priya Nair** (Gerente do SOC) está em reuniões a manhã toda.
 
 Abra o **Painel do SOC** para começar.`,
     },
@@ -105,8 +105,8 @@ Preencha o relatório do caso com os 5 Ws. Veja [Como escrever um relatório](#r
     summaryHint: 'Explique de forma que o N2 entenda o caso em um minuto.',
     escalate: 'Escalar para',
     noEscalation: 'Sem escalonamento: fechar o alerta',
-    toL2: 'Mara Lindqvist (N2 de plantão)',
-    toEngineer: 'Kenji Watanabe (Engenheiro SOC)',
+    toL2: 'Lucas Sagás (N2 de plantão)',
+    toEngineer: 'Thuany Kamers (Engenheiro SOC)',
     toManager: 'Priya Nair (Gerente do SOC)',
   },
   grade: {
@@ -119,7 +119,7 @@ Preencha o relatório do caso com os 5 Ws. Veja [Como escrever um relatório](#r
     lock: { label: 'Você bloqueou a conta comprometida l.moreau.', tip: 'O atacante entrou como l.moreau às 08:10:48. Bloquear a conta encerra essa sessão de VPN.' },
     noWrongLock: { label: 'Você não bloqueou contas sem evidência.', tip: 'Só a conta com login malicioso bem-sucedido precisava ser bloqueada.' },
     verdict: { label: 'Veredito: verdadeiro positivo.', tip: 'Centenas de falhas de um IP malicioso seguidas de um sucesso é um ataque real.' },
-    escalate: { label: 'Você escalou para o N2 de plantão.', tip: 'Um login bem-sucedido do atacante é um comprometimento: escale para Mara Lindqvist (N2), conforme a matriz de escalonamento.' },
+    escalate: { label: 'Você escalou para o N2 de plantão.', tip: 'Um login bem-sucedido do atacante é um comprometimento: escale para Lucas Sagás (N2), conforme a matriz de escalonamento.' },
     who: { label: 'Quem: a conta afetada está nomeada.', tip: 'O relatório precisa nomear a conta comprometida (l.moreau / Lucas Moreau).' },
     where: { label: 'Onde: o IP do atacante está no relatório.', tip: 'Inclua o IP de origem 203.0.113.45 como IOC.' },
     when: { label: 'Quando: a janela de tempo está correta.', tip: 'O ataque foi de 08:07:02 (primeira tentativa de spraying) até o login bem-sucedido às 08:10:48.' },

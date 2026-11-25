@@ -4,6 +4,7 @@ import i18n from './i18n'
 import { Boot } from './os/Boot'
 import { Desktop } from './os/Desktop'
 import { Login } from './os/Login'
+import { LaptopIntro } from './os/LaptopIntro'
 
 export default function App() {
   const phase = useGame((s) => s.phase)
@@ -14,6 +15,7 @@ export default function App() {
     document.documentElement.lang = lang
   }, [lang])
   if (phase === 'desktop' && os) return <Desktop />
+  if (phase === 'intro' && os) return <LaptopIntro />
   if (phase === 'login' && os) return <Login />
   return <Boot />
 }

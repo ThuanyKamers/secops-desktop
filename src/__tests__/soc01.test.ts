@@ -25,7 +25,7 @@ describe('Mission soc-01', () => {
     ]
     const report = {
       verdict: 'true_positive', who: 'l.moreau', attacker_ip: '203.0.113.45', start_time: '08:07:02', end_time: '08:10:48',
-      assets: 'fs-01 (10.10.5.20)', escalate_to: 'm.lindqvist',
+      assets: 'fs-01 (10.10.5.20)', escalate_to: 'l.sagas',
       summary: 'Brute force from a malicious hosting IP against the VPN; 212 failures then a successful login as l.moreau without MFA. The session read finance files on fs-01. IP blocked, account locked.',
     }
     const r = soc01.grade({ data, events, report, me: 'you' })

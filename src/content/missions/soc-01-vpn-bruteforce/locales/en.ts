@@ -41,7 +41,7 @@ A new **high** severity alert just landed in the queue. Handle it following our 
 - Who to call: [Escalation matrix](#escalation)
 - What goes in the report: [Writing a case report](#reporting)
 
-Your team today: **Mara Lindqvist** (L2 on shift), **Kenji Watanabe** (SOC Engineer) and **Ana Silva** (L1, working on another alert). **Priya Nair** (SOC Manager) is in meetings all morning.
+Your team today: **Lucas Sagás** (L2 on shift), **Thuany Kamers** (SOC Engineer) and **Davi Amorim** (L1, working on another alert). **Priya Nair** (SOC Manager) is in meetings all morning.
 
 Open the **SOC Dashboard** to begin.`,
     },
@@ -105,8 +105,8 @@ Fill the case report with the 5 Ws. See [Writing a case report](#reporting).`,
     summaryHint: 'Explain it so the L2 understands the case in one minute.',
     escalate: 'Escalate to',
     noEscalation: 'No escalation: close the alert',
-    toL2: 'Mara Lindqvist (L2 on shift)',
-    toEngineer: 'Kenji Watanabe (SOC Engineer)',
+    toL2: 'Lucas Sagás (L2 on shift)',
+    toEngineer: 'Thuany Kamers (SOC Engineer)',
     toManager: 'Priya Nair (SOC Manager)',
   },
   grade: {
@@ -119,7 +119,7 @@ Fill the case report with the 5 Ws. See [Writing a case report](#reporting).`,
     lock: { label: 'You locked the compromised account l.moreau.', tip: 'The attacker logged in as l.moreau at 08:10:48. Locking the account ends that VPN session.' },
     noWrongLock: { label: 'You did not lock accounts without evidence.', tip: 'Only the account with a successful malicious login needed locking.' },
     verdict: { label: 'Verdict: true positive.', tip: 'Hundreds of failures from a malicious IP followed by a success is a real attack.' },
-    escalate: { label: 'You escalated to the L2 on shift.', tip: 'A successful attacker login is a compromise: escalate to Mara Lindqvist (L2), per the escalation matrix.' },
+    escalate: { label: 'You escalated to the L2 on shift.', tip: 'A successful attacker login is a compromise: escalate to Lucas Sagás (L2), per the escalation matrix.' },
     who: { label: 'Who: the affected account is named.', tip: 'The report must name the compromised account (l.moreau / Lucas Moreau).' },
     where: { label: 'Where: the attacker IP is in the report.', tip: 'Include the source IP 203.0.113.45 as an IOC.' },
     when: { label: 'When: the time window is correct.', tip: 'The attack ran from 08:07:02 (first spray attempt) to the successful login at 08:10:48.' },

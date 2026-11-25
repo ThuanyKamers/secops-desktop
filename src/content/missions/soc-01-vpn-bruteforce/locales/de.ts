@@ -41,7 +41,7 @@ Gerade ist ein neuer Alarm mit Schweregrad **hoch** in der Warteschlange gelande
 - Wen man kontaktiert: [Eskalationsmatrix](#escalation)
 - Was in den Bericht gehört: [Einen Fallbericht schreiben](#reporting)
 
-Dein Team heute: **Mara Lindqvist** (L2 im Dienst), **Kenji Watanabe** (SOC Engineer) und **Ana Silva** (L1, arbeitet an einem anderen Alarm). **Priya Nair** (SOC-Managerin) ist den ganzen Vormittag in Meetings.
+Dein Team heute: **Lucas Sagás** (L2 im Dienst), **Thuany Kamers** (SOC Engineer) und **Davi Amorim** (L1, arbeitet an einem anderen Alarm). **Priya Nair** (SOC-Managerin) ist den ganzen Vormittag in Meetings.
 
 Öffne das **SOC-Dashboard**, um zu beginnen.`,
     },
@@ -105,8 +105,8 @@ Fülle den Fallbericht mit den 5 W aus. Siehe [Einen Fallbericht schreiben](#rep
     summaryHint: 'Erkläre es so, dass der L2 den Fall in einer Minute versteht.',
     escalate: 'Eskalieren an',
     noEscalation: 'Keine Eskalation: Alarm schließen',
-    toL2: 'Mara Lindqvist (L2 im Dienst)',
-    toEngineer: 'Kenji Watanabe (SOC Engineer)',
+    toL2: 'Lucas Sagás (L2 im Dienst)',
+    toEngineer: 'Thuany Kamers (SOC Engineer)',
     toManager: 'Priya Nair (SOC-Managerin)',
   },
   grade: {
@@ -119,7 +119,7 @@ Fülle den Fallbericht mit den 5 W aus. Siehe [Einen Fallbericht schreiben](#rep
     lock: { label: 'Du hast das kompromittierte Konto l.moreau gesperrt.', tip: 'Der Angreifer hat sich um 08:10:48 als l.moreau angemeldet. Das Sperren des Kontos beendet diese VPN-Sitzung.' },
     noWrongLock: { label: 'Du hast keine Konten ohne Belege gesperrt.', tip: 'Nur das Konto mit der erfolgreichen bösartigen Anmeldung musste gesperrt werden.' },
     verdict: { label: 'Urteil: True Positive.', tip: 'Hunderte Fehlversuche von einer bösartigen IP und dann ein Erfolg sind ein echter Angriff.' },
-    escalate: { label: 'Du hast an den L2 im Dienst eskaliert.', tip: 'Eine erfolgreiche Anmeldung des Angreifers ist eine Kompromittierung: eskaliere laut Eskalationsmatrix an Mara Lindqvist (L2).' },
+    escalate: { label: 'Du hast an den L2 im Dienst eskaliert.', tip: 'Eine erfolgreiche Anmeldung des Angreifers ist eine Kompromittierung: eskaliere laut Eskalationsmatrix an Lucas Sagás (L2).' },
     who: { label: 'Wer: Das betroffene Konto ist genannt.', tip: 'Der Bericht muss das kompromittierte Konto nennen (l.moreau / Lucas Moreau).' },
     where: { label: 'Wo: Die IP des Angreifers steht im Bericht.', tip: 'Nimm die Quell-IP 203.0.113.45 als IOC auf.' },
     when: { label: 'Wann: Das Zeitfenster stimmt.', tip: 'Der Angriff lief von 08:07:02 (erster Spraying-Versuch) bis zur erfolgreichen Anmeldung um 08:10:48.' },

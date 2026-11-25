@@ -37,7 +37,7 @@ interface MissionRun {
 interface GameState {
   os: OsId | null
   lang: Lang
-  phase: 'boot' | 'login' | 'desktop'
+  phase: 'boot' | 'intro' | 'login' | 'desktop'
   windows: WindowState[]
   zTop: number
   wikiPage: string | null
@@ -46,6 +46,7 @@ interface GameState {
 
   setLang: (l: Lang) => void
   chooseOs: (os: OsId) => void
+  finishIntro: () => void
   login: () => void
   logout: () => void
 
@@ -109,7 +110,8 @@ export const useGame = create<GameState>()(
       completed: {},
 
       setLang: (lang) => set({ lang }),
-      chooseOs: (os) => set({ os, phase: 'login' }),
+      chooseOs: (os) => set({ os, phase: 'intro' }),
+      finishIntro: () => set((s) => (s.phase === 'intro' ? { phase: 'login' } : {})),
       login: () => {
         set({ phase: 'desktop' })
         if (get().windows.length === 0) get().openApp('missions')
