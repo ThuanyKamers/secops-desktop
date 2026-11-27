@@ -8,6 +8,7 @@ import { ThreatIntel } from './ThreatIntel'
 import { Firewall } from './Firewall'
 import { Directory } from './Directory'
 import { Notes } from './Notes'
+import { Profile } from './Profile'
 
 export const APP_COMPONENTS: Record<AppId, ComponentType> = {
   missions: Missions,
@@ -18,4 +19,5 @@ export const APP_COMPONENTS: Record<AppId, ComponentType> = {
   firewall: Firewall,
   directory: Directory,
   notes: Notes,
+  profile: Profile,
 }
