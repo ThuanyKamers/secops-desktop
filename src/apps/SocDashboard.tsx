@@ -3,10 +3,46 @@ import { useTranslation } from 'react-i18next'
 import { PLAYER, useGame } from '../core/store'
 import type { Alert, Severity } from '../core/types'
 import { NoMission, fmtDateTime, fmtTime, useRun } from './shared'
-import { BADGES } from '../core/progress'
+import { BADGES, LEVELS, playerStats } from '../core/progress'
+import { MISSIONS } from '../content'
 
 const SEV_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 }
 type Filter = 'all' | 'new' | 'mine' | 'open'
+
+function Reward() {
+  const { t } = useTranslation()
+  const run = useGame((s) => s.run)
+  const history = useGame((s) => s.history)
+  const reward = run?.reward
+  if (!reward) return null
+  const stats = playerStats(history, MISSIONS)
+  const { next } = stats.level
+  const leveled = reward.levelAfter > reward.levelBefore
+  const lockedBadge = BADGES.find((b) => !stats.badges.includes(b.id))
+  return (
+    <div className={`reward ${leveled ? 'leveled' : ''}`}>
+      {leveled && (
+        <div className="confetti" aria-hidden>
+          {Array.from({ length: 24 }, (_, i) => <i key={i} style={{ '--i': i } as React.CSSProperties} />)}
+        </div>
+      )}
+      {reward.xpGained > 0 ? <p className="xp-gain">+{reward.xpGained} XP</p> : <p className="muted">{t('reward.noXp')}</p>}
+      {leveled && (
+        <p className="level-up" role="status">
+          {t('reward.levelUp', { level: reward.levelAfter, title: t(`levels.${Math.min(reward.levelAfter, LEVELS.length) - 1}`) })}
+        </p>
+      )}
+      {reward.streak > 0 && (
+        <p>🔥 {reward.firstToday && reward.streak > 1 ? t('reward.streakUp', { count: reward.streak }) : t('streak.days', { count: reward.streak })}</p>
+      )}
+      <div className="xp-bar" aria-hidden><span style={{ width: `${Math.round(stats.level.progress * 100)}%` }} /></div>
+      <p className="muted small">
+        {next === null ? t('profile.maxLevel', { xp: stats.xp }) : t('reward.toNext', { xp: next - stats.xp, level: stats.level.level + 1 })}
+        {lockedBadge && <> · {t('reward.nextBadge')}: {lockedBadge.icon} {t(`badges.${lockedBadge.id}.name`)}</>}
+      </p>
+    </div>
+  )
+}
 
 function Result() {
   const { t } = useTranslation()
@@ -21,6 +57,7 @@ function Result() {
       <div className={`score-ring ${pct >= 85 ? 'great' : pct >= 60 ? 'good' : 'low'}`}>{pct}%</div>
       <p className="score-line">{t('result.score', { score, max, pct })}</p>
       <p>{t(pct >= 85 ? 'result.great' : pct >= 60 ? 'result.good' : 'result.low')}</p>
+      <Reward />
       {!!run.newBadges?.length && (
         <div className="new-badges">
           <strong>{t('result.newBadges')}</strong>
