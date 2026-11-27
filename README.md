@@ -52,12 +52,15 @@ The project follows a small secure SDLC, so the code is held to the same standar
 - **Protected `main` branch:** changes only land through pull requests, and the CodeQL checks must pass before merging. Force pushes are blocked.
 - **Least-privilege CI:** each workflow job requests only the permissions it needs (`contents: read` by default; `security-events: write` only for uploading scan results; `pages: write` only for deploying).
 - **Tests in the pipeline:** the deploy workflow runs the unit tests before building, so a failing test never reaches the live site.
+- **Database security tested in CI:** player data lives in Supabase (Postgres) behind Row Level Security. The browser only holds the public key, so the [policies](supabase/migrations/0001_players.sql) are the security boundary: players can read and add only their own results, cannot edit or delete them, cannot touch other profiles, and the server re-checks every score against the mission's real maximum. [`rls.test.sql`](supabase/tests/rls.test.sql) attacks those rules on every pull request (forged scores, writing as another player, anonymous writes) and fails the build if any gets through.
+- **Privacy by design:** profiles hold only a username and display name (no email in public tables), and players can delete their account and all its data from the Profile app.
 
 ## How it works
 
 - **Stack:** React + TypeScript + Vite, Zustand for state (progress saved in the browser), i18next for translations. Static site deployed to GitHub Pages by GitHub Actions.
 - **Missions are data.** Each mission lives in `src/content/missions/<id>/` and declares its alerts, logs, threat intel records, Wiki pages, report fields and grading rules. The desktop and apps are generic and render whatever the active mission provides.
 - **SIEM engine:** a small in-memory query language (`field=value`, `AND`/`OR`/`NOT`, wildcards, numeric comparisons, free text, time range) in `src/engine/query.ts`.
+- **Progression:** XP, levels and badges are computed from mission attempts in `src/core/progress.ts`; only the best attempt per mission gives XP, so replays can't farm points. Signed-in players sync attempts to Supabase and appear in the global ranking.
 - **Tests:** Vitest covers the query engine, the mission's logs and grading, and checks that every language has the same translation keys.
 
 ```bash

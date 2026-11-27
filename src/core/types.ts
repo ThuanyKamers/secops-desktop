@@ -7,6 +7,7 @@ export type Lang = 'en' | 'pt' | 'es' | 'de' | 'fr'
 
 export type AppId =
   | 'missions'
+  | 'profile'
   | 'wiki'
   | 'soc'
   | 'siem'

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { PLAYER, useGame } from '../core/store'
 import type { Alert, Severity } from '../core/types'
 import { NoMission, fmtDateTime, fmtTime, useRun } from './shared'
+import { BADGES } from '../core/progress'
 
 const SEV_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 }
 type Filter = 'all' | 'new' | 'mine' | 'open'
@@ -20,6 +21,16 @@ function Result() {
       <div className={`score-ring ${pct >= 85 ? 'great' : pct >= 60 ? 'good' : 'low'}`}>{pct}%</div>
       <p className="score-line">{t('result.score', { score, max, pct })}</p>
       <p>{t(pct >= 85 ? 'result.great' : pct >= 60 ? 'result.good' : 'result.low')}</p>
+      {!!run.newBadges?.length && (
+        <div className="new-badges">
+          <strong>{t('result.newBadges')}</strong>
+          <ul>
+            {run.newBadges.map((id) => (
+              <li key={id}><span aria-hidden>{BADGES.find((b) => b.id === id)?.icon}</span> {t(`badges.${id}.name`)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <ul className="checks">
         {checks.map((c) => (
           <li key={c.id} className={c.ok ? 'ok' : 'miss'}>
@@ -35,6 +46,7 @@ function Result() {
       <div className="row">
         <button className="btn primary" onClick={() => openApp('missions')}>{t('result.back')}</button>
         <button className="btn" onClick={() => startMission(mission.id)}>{t('result.retry')}</button>
+        <button className="btn ghost" onClick={() => openApp('profile')}>{t('result.profile')}</button>
       </div>
     </div>
   )

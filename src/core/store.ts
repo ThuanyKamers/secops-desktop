@@ -10,7 +10,8 @@ import type {
   OsId,
   Verdict,
 } from './types'
-import { getMission } from '../content'
+import { MISSIONS, getMission } from '../content'
+import { attemptFlags, earnedBadges, type Attempt } from './progress'
 
 export const PLAYER = 'you'
 
@@ -32,6 +33,10 @@ interface MissionRun {
   report: Record<string, string>
   escalatedTo?: string
   result?: GradeResult
+  /** epoch ms when the mission started */
+  startedAt?: number
+  /** badges earned by this attempt's report */
+  newBadges?: string[]
 }
 
 interface GameState {
@@ -45,6 +50,9 @@ interface GameState {
   completed: Record<string, number>
   notes: string
   setNotes: (v: string) => void
+  history: Attempt[]
+  playerName: string
+  setPlayerName: (v: string) => void
 
   setLang: (l: Lang) => void
   chooseOs: (os: OsId) => void
@@ -83,6 +91,7 @@ const DEFAULT_SIZE: Partial<Record<AppId, { w: number; h: number }>> = {
   firewall: { w: 640, h: 480 },
   directory: { w: 760, h: 500 },
   notes: { w: 460, h: 440 },
+  profile: { w: 640, h: 560 },
 }
 
 function fitWindow(app: AppId, index: number) {
@@ -140,6 +149,9 @@ export const useGame = create<GameState>()(
       completed: {},
       notes: '',
       setNotes: (notes) => set({ notes }),
+      history: [],
+      playerName: '',
+      setPlayerName: (playerName) => set({ playerName: playerName.slice(0, 24) }),
 
       setLang: (lang) => set({ lang }),
       chooseOs: (os) => set({ os, phase: 'intro' }),
@@ -210,7 +222,7 @@ export const useGame = create<GameState>()(
         const m = getMission(id)
         if (!m) return
         set({
-          run: { missionId: id, data: m.data(), events: [], report: {} },
+          run: { missionId: id, data: m.data(), events: [], report: {}, startedAt: Date.now() },
           windows: get().windows.filter((w) => w.app === 'missions'),
         })
         get().openWiki(m.startPage)
@@ -282,8 +294,25 @@ export const useGame = create<GameState>()(
         if (!m) return null
         const result = m.grade({ data: r.data, events: r.events, report: r.report, me: PLAYER })
         const pct = Math.round((result.score / result.max) * 100)
+        const s0 = get()
+        const attempt: Attempt = {
+          id: crypto.randomUUID(),
+          missionId: r.missionId,
+          score: result.score,
+          max: result.max,
+          pct,
+          at: new Date().toISOString(),
+          durationSec: r.startedAt ? Math.max(0, Math.round((Date.now() - r.startedAt) / 1000)) : 0,
+          lang: s0.lang,
+          os: s0.os ?? 'windows',
+          flags: attemptFlags(r.events),
+        }
+        const history = [...s0.history, attempt]
+        const before = new Set(earnedBadges(s0.history, MISSIONS))
+        const newBadges = earnedBadges(history, MISSIONS).filter((b) => !before.has(b))
         set((s) => ({
-          run: s.run ? { ...s.run, result } : null,
+          run: s.run ? { ...s.run, result, newBadges } : null,
+          history,
           completed: { ...s.completed, [r.missionId]: Math.max(pct, s.completed[r.missionId] ?? 0) },
         }))
         return result
@@ -311,7 +340,7 @@ export const useGame = create<GameState>()(
         const p = (persisted ?? {}) as Partial<GameState>
         return { ...current, ...p, run: refreshRun(p.run) }
       },
-      partialize: (s) => ({ notes: s.notes, os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
+      partialize: (s) => ({ notes: s.notes, history: s.history, playerName: s.playerName, os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
     },
   ),
 )
