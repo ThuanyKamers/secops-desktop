@@ -65,6 +65,54 @@ export function levelOf(xp: number) {
   return { level, floor, next, progress: next === null ? 1 : (xp - floor) / (next - floor) }
 }
 
+// ---- activity and streaks ------------------------------------------------
+
+/** Local calendar day (YYYY-MM-DD) of an ISO timestamp */
+export function dayKey(iso: string | Date): string {
+  const d = typeof iso === 'string' ? new Date(iso) : iso
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+/** Number of finished attempts per local day */
+export function activityByDay(history: Attempt[]): Map<string, number> {
+  const m = new Map<string, number>()
+  for (const a of history) {
+    const k = dayKey(a.at)
+    m.set(k, (m.get(k) ?? 0) + 1)
+  }
+  return m
+}
+
+function prevDay(key: string): string {
+  const [y, mo, d] = key.split('-').map(Number)
+  return dayKey(new Date(y, mo - 1, d - 1))
+}
+
+/**
+ * current: consecutive active days ending today (or yesterday, so the streak is not
+ * lost before the player had a chance to play today). best: longest run ever.
+ */
+export function streaks(history: Attempt[], now = new Date()) {
+  const days = new Set(activityByDay(history).keys())
+  const today = dayKey(now)
+  let cur = 0
+  let k = days.has(today) ? today : prevDay(today)
+  while (days.has(k)) { cur++; k = prevDay(k) }
+  let best = 0
+  for (const d of days) {
+    if (days.has(prevDay(d))) continue // not the start of a run
+    let len = 0
+    let x = d
+    while (days.has(x)) {
+      len++
+      const [y, mo, dd] = x.split('-').map(Number)
+      x = dayKey(new Date(y, mo - 1, dd + 1))
+    }
+    best = Math.max(best, len)
+  }
+  return { current: cur, best, playedToday: days.has(today) }
+}
+
 // ---- badges --------------------------------------------------------------
 
 export interface Badge {
@@ -96,6 +144,8 @@ export const BADGES: Badge[] = [
   { id: 'contained', icon: '🧱', test: (h) => passed(h).some((a) => a.flags.contained) },
   { id: 'polyglot', icon: '🌍', test: (h) => new Set(passed(h).map((a) => a.lang)).size >= 2 },
   { id: 'cross_platform', icon: '💻', test: (h) => new Set(passed(h).map((a) => a.os)).size >= 3 },
+  { id: 'streak_3', icon: '🔥', test: (h) => streaks(h).best >= 3 },
+  { id: 'streak_7', icon: '🗓️', test: (h) => streaks(h).best >= 7 },
   {
     id: 'soc_track',
     icon: '🛡️',

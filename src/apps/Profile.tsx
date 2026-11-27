@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGame } from '../core/store'
 import { MISSIONS, getMission } from '../content'
-import { BADGES, BADGE_XP, LEVELS, playerStats } from '../core/progress'
+import { BADGES, BADGE_XP, LEVELS, playerStats, streaks } from '../core/progress'
+import { ActivityCalendar, ScoreChart } from './ProfileCharts'
 import {
   USERNAME_RE,
   deleteAccount,
@@ -17,7 +18,7 @@ import {
   type RankRow,
 } from '../core/cloud'
 
-type Tab = 'badges' | 'history' | 'ranking'
+type Tab = 'progress' | 'badges' | 'history' | 'ranking'
 
 function initials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean)
@@ -174,7 +175,8 @@ export function Profile() {
   const name = useGame((s) => s.playerName)
   const setName = useGame((s) => s.setPlayerName)
   const stats = useMemo(() => playerStats(history, MISSIONS), [history])
-  const [tab, setTab] = useState<Tab>('badges')
+  const streak = useMemo(() => streaks(history), [history])
+  const [tab, setTab] = useState<Tab>('progress')
   const { level, next, progress } = stats.level
   const levelIdx = Math.min(level, LEVELS.length) - 1
 
@@ -197,6 +199,11 @@ export function Profile() {
           />
           <p className="pf-level">
             {t('profile.level', { level })} · <strong>{t(`levels.${levelIdx}`)}</strong>
+            {streak.current > 0 && (
+              <span className={`streak-chip ${streak.playedToday ? '' : 'at-risk'}`} title={streak.playedToday ? t('streak.safe') : t('streak.atRisk')}>
+                🔥 {t('streak.days', { count: streak.current })}
+              </span>
+            )}
           </p>
           <div className="xp-bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} aria-label={t('profile.xpLabel')}>
             <span style={{ width: `${Math.round(progress * 100)}%` }} />
@@ -215,12 +222,21 @@ export function Profile() {
       </dl>
 
       <div className="pf-tabs" role="tablist">
-        {(['badges', 'history', 'ranking'] as Tab[]).map((x) => (
+        {(['progress', 'badges', 'history', 'ranking'] as Tab[]).map((x) => (
           <button key={x} role="tab" aria-selected={tab === x} className={tab === x ? 'on' : ''} onClick={() => setTab(x)}>
             {t(`profile.tabs.${x}`)}
           </button>
         ))}
       </div>
+
+      {tab === 'progress' && (
+        <div className="pf-progress">
+          {!streak.playedToday && <p className="streak-nudge">{streak.current > 0 ? t('streak.keepGoing', { count: streak.current }) : t('streak.start')}</p>}
+          <ScoreChart history={history} />
+          <ActivityCalendar history={history} />
+          <p className="muted small">{t('streak.best', { count: streak.best })}</p>
+        </div>
+      )}
 
       {tab === 'badges' && (
         <ul className="badge-grid">

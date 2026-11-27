@@ -11,7 +11,7 @@ import type {
   Verdict,
 } from './types'
 import { MISSIONS, getMission } from '../content'
-import { attemptFlags, earnedBadges, type Attempt } from './progress'
+import { attemptFlags, earnedBadges, playerStats, streaks, type Attempt } from './progress'
 
 export const PLAYER = 'you'
 
@@ -37,6 +37,8 @@ interface MissionRun {
   startedAt?: number
   /** badges earned by this attempt's report */
   newBadges?: string[]
+  /** what this attempt changed, for the celebration on the results screen */
+  reward?: { xpGained: number; levelBefore: number; levelAfter: number; streak: number; firstToday: boolean }
 }
 
 interface GameState {
@@ -313,8 +315,17 @@ export const useGame = create<GameState>()(
         const history = [...s0.history, attempt]
         const before = new Set(earnedBadges(s0.history, MISSIONS))
         const newBadges = earnedBadges(history, MISSIONS).filter((b) => !before.has(b))
+        const sBefore = playerStats(s0.history, MISSIONS)
+        const sAfter = playerStats(history, MISSIONS)
+        const reward = {
+          xpGained: sAfter.xp - sBefore.xp,
+          levelBefore: sBefore.level.level,
+          levelAfter: sAfter.level.level,
+          streak: streaks(history).current,
+          firstToday: !streaks(s0.history).playedToday,
+        }
         set((s) => ({
-          run: s.run ? { ...s.run, result, newBadges } : null,
+          run: s.run ? { ...s.run, result, newBadges, reward } : null,
           history,
           completed: { ...s.completed, [r.missionId]: Math.max(pct, s.completed[r.missionId] ?? 0) },
         }))
