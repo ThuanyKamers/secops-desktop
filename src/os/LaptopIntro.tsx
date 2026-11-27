@@ -100,7 +100,7 @@ export function LaptopIntro() {
                 <div className="display" ref={screenRef} style={{ width: screenW, height: screenH }}>
                   {step === 'boot' && (
                     <div className={`boot-splash splash-${os}`}>
-                      <svg viewBox="0 0 24 24" width={screenH * 0.16} height={screenH * 0.16} aria-hidden><path fill="currentColor" d={logo} /></svg>
+                      <svg viewBox="0 0 24 24" width={screenH * 0.16} height={screenH * 0.16} aria-hidden><path fill="currentColor" fillRule="evenodd" d={logo} /></svg>
                       {os === 'macos' ? <div className="splash-bar"><span /></div> : <div className="splash-dots"><i /><i /><i /><i /><i /></div>}
                     </div>
                   )}

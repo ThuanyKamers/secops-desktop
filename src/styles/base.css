@@ -145,7 +145,15 @@ textarea { resize: vertical; width: 100%; }
 .login-box .btn { width: 100%; }
 .avatar { width: 72px; height: 72px; border-radius: 50%; background: #fff3; display: grid; place-items: center; font-size: 34px; }
 .login-user { font-size: 18px; font-weight: 600; }
-.login-hint { font-size: 12px; opacity: 0.85; margin: 0; }
+.login-hint { font-size: 12px; opacity: 0.85; margin: 0; text-align: center; }
+.login-box { width: min(340px, 100%); }
+.avatar.initials { font-size: 26px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #ec4899, #6366f1); }
+.login-or { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 12px; opacity: 0.8; }
+.login-or::before, .login-or::after { content: ''; flex: 1; height: 1px; background: #fff5; }
+.login-email { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.login-error { font-size: 12px; margin: 0; padding: 6px 10px; border-radius: 6px; background: #b91c1c; color: #fff; text-align: center; }
+.btn.ghost-light { background: transparent; border-color: #fff6; color: #fff; }
+.btn.ghost-light:hover { background: #fff2; }
 
 .empty { display: grid; place-items: center; gap: 10px; text-align: center; padding: 40px 16px; color: var(--fg-2); }
 

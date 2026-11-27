@@ -28,7 +28,7 @@ export function Boot() {
           {OS_LIST.map((o) => (
             <button key={o.id} role="radio" aria-checked={os === o.id} className={`os-card os-card-${o.id} ${os === o.id ? 'selected' : ''}`} onClick={() => setOs(o.id)}>
               <div className="laptop">
-                <div className="laptop-screen"><svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d={o.logo} /></svg></div>
+                <div className="laptop-screen"><svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" fillRule="evenodd" d={o.logo} /></svg></div>
                 <div className="laptop-base" />
               </div>
               <span>{t(`boot.os.${o.id}`)}</span>

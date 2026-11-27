@@ -10,10 +10,12 @@ export const ui = {
   },
   login: {
     user: 'Security Analyst',
-    password: 'Password',
     signIn: 'Sign in',
-    hint: 'Training workstation: no password needed.',
     back: 'Change workstation',
+    or: "or",
+    guest: "Continue as guest",
+    guestHint: "Guest progress stays in this browser and is not shown in the ranking.",
+    switchAccount: "Use another account",
   },
   apps: {
     missions: 'Training Hub',

@@ -10,10 +10,12 @@ export const ui = {
   },
   login: {
     user: 'Analyste sécurité',
-    password: 'Mot de passe',
     signIn: 'Se connecter',
-    hint: 'Poste de formation : aucun mot de passe nécessaire.',
     back: 'Changer de poste',
+    or: "ou",
+    guest: "Continuer en invité",
+    guestHint: "En invité, votre progression reste dans ce navigateur et n’apparaît pas au classement.",
+    switchAccount: "Utiliser un autre compte",
   },
   apps: {
     missions: 'Centre de formation',

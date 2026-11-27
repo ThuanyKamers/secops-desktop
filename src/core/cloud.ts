@@ -109,6 +109,13 @@ let started = false
 export function startCloud() {
   if (started) return
   started = true
+  // a failed sign-in comes back as ?error_description=... (or in the hash)
+  const params = new URLSearchParams(window.location.search + '&' + window.location.hash.slice(1))
+  const authError = params.get('error_description')
+  if (authError) {
+    useAccount.setState({ error: authError })
+    window.history.replaceState(null, '', window.location.pathname)
+  }
   client()
     .then((sb) => {
       sb.auth.onAuthStateChange((_event, session) => {

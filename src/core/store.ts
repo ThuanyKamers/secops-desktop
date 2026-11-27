@@ -132,6 +132,9 @@ export function refreshRun(run: MissionRun | null | undefined): MissionRun | nul
   }
 }
 
+/** true when the page was opened by a sign-in redirect (GitHub / email link) */
+const AUTH_RETURN = typeof window !== 'undefined' && /[?&#](code|access_token|error_description)=/.test(window.location.search + window.location.hash)
+
 function mapRun(s: GameState, f: (r: MissionRun) => MissionRun): Partial<GameState> {
   return s.run ? { run: f(s.run) } : {}
 }
@@ -338,7 +341,7 @@ export const useGame = create<GameState>()(
       }),
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<GameState>
-        return { ...current, ...p, run: refreshRun(p.run) }
+        return { ...current, ...p, run: refreshRun(p.run), phase: AUTH_RETURN && p.os ? 'login' : current.phase }
       },
       partialize: (s) => ({ notes: s.notes, history: s.history, playerName: s.playerName, os: s.os, lang: s.lang, completed: s.completed, run: s.run, wikiPage: s.wikiPage }),
     },
