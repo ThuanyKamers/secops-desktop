@@ -10,10 +10,12 @@ export const ui = {
   },
   login: {
     user: 'Security Analyst',
-    password: 'Passwort',
     signIn: 'Anmelden',
-    hint: 'Trainingsarbeitsplatz: kein Passwort nötig.',
     back: 'Arbeitsplatz wechseln',
+    or: "oder",
+    guest: "Als Gast fortfahren",
+    guestHint: "Als Gast bleibt dein Fortschritt in diesem Browser und erscheint nicht in der Rangliste.",
+    switchAccount: "Anderes Konto verwenden",
   },
   apps: {
     missions: 'Trainingszentrale',

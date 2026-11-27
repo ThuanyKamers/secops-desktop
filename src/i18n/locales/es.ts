@@ -10,10 +10,12 @@ export const ui = {
   },
   login: {
     user: 'Analista de Seguridad',
-    password: 'Contraseña',
     signIn: 'Iniciar sesión',
-    hint: 'Estación de formación: no hace falta contraseña.',
     back: 'Cambiar de estación',
+    or: "o",
+    guest: "Continuar como invitado",
+    guestHint: "El progreso como invitado se queda en este navegador y no aparece en el ranking.",
+    switchAccount: "Usar otra cuenta",
   },
   apps: {
     missions: 'Centro de Formación',
