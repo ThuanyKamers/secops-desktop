@@ -201,6 +201,16 @@ export const ui = {
     signOut: "Abmelden",
     delete: "Konto löschen",
     confirmDelete: "Erneut klicken, um dein Konto und alle Daten zu löschen",
+    photoChange: "Foto ändern",
+    photoRemove: "Foto entfernen",
+    photoHint: "PNG, JPG oder WebP bis 5 MB",
+    photoUploading: "Wird hochgeladen…",
+    photoSignIn: "Melde dich an, um ein Foto hinzuzufügen",
+    avatarErr: {
+      type: "Bitte ein PNG-, JPG-, WebP- oder GIF-Bild verwenden.",
+      tooBig: "Das Bild ist zu groß. Wähle eines unter 5 MB.",
+      unreadable: "Dieses Bild konnte nicht gelesen werden. Versuch eine andere Datei.",
+    },
   },
   ranking: {
     signIn: "Melde dich oben im Profil an, um in der Rangliste zu erscheinen.",

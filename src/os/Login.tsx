@@ -32,7 +32,11 @@ export function Login() {
       <div className="login-box">
         {status === 'signedIn' ? (
           <>
-            <div className="avatar initials" aria-hidden>{initials(profile?.display_name || profile?.username || '?')}</div>
+            {profile?.avatar_url ? (
+              <img className="avatar photo" src={profile.avatar_url} alt="" />
+            ) : (
+              <div className="avatar initials" aria-hidden>{initials(profile?.display_name || profile?.username || '?')}</div>
+            )}
             <div className="login-user">{name || '…'}</div>
             {profile && profile.display_name && <div className="login-hint">@{profile.username}</div>}
             <button className="btn primary" autoFocus onClick={login}>{t('login.signIn')}</button>

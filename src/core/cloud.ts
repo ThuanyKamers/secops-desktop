@@ -3,6 +3,7 @@ import { create } from 'zustand'
 import { useGame } from './store'
 import { earnedBadges } from './progress'
 import { MISSIONS } from '../content'
+import { checkAvatarFile, resizeAvatar } from './avatar'
 
 // Public by design: the publishable key ships with every Supabase web app.
 // What protects player data is Row Level Security, see supabase/migrations.
@@ -14,12 +15,14 @@ export const USERNAME_RE = /^[a-z0-9_]{3,20}$/
 export interface CloudProfile {
   username: string
   display_name: string | null
+  avatar_url: string | null
 }
 
 export interface RankRow {
   rank: number
   username: string
   display_name: string | null
+  avatar_url: string | null
   xp: number
   missions: number
   badges: number
@@ -65,7 +68,7 @@ function fail(e: unknown) {
 
 async function loadProfile(userId: string) {
   const sb = await client()
-  const { data, error } = await sb.from('profiles').select('username, display_name').eq('id', userId).single()
+  const { data, error } = await sb.from('profiles').select('username, display_name, avatar_url').eq('id', userId).single()
   if (error) return fail(error)
   useAccount.setState({ profile: data })
   if (data.display_name && !useGame.getState().playerName) useGame.getState().setPlayerName(data.display_name)
@@ -172,7 +175,7 @@ export async function updateProfile(patch: Partial<CloudProfile>): Promise<boole
   if (!userId) return false
   useAccount.setState({ error: null })
   const sb = await client()
-  const { data, error } = await sb.from('profiles').update(patch).eq('id', userId).select('username, display_name').single()
+  const { data, error } = await sb.from('profiles').update(patch).eq('id', userId).select('username, display_name, avatar_url').single()
   if (error) {
     fail(error.code === '23505' ? 'username_taken' : error)
     return false
@@ -184,6 +187,9 @@ export async function updateProfile(patch: Partial<CloudProfile>): Promise<boole
 export async function deleteAccount() {
   try {
     const sb = await client()
+    // Storage files are not removed by the database cascade, so delete the photo first
+    const uid = useAccount.getState().userId
+    if (uid) await sb.storage.from('avatars').remove([`${uid}/avatar.webp`])
     const { error } = await sb.rpc('delete_my_account')
     if (error) throw error
     await sb.auth.signOut()
@@ -197,4 +203,43 @@ export async function fetchLeaderboard(): Promise<RankRow[]> {
   const { data, error } = await sb.rpc('leaderboard', { max_rows: 50 })
   if (error) throw error
   return (data ?? []) as RankRow[]
+}
+
+/** Resizes the picked image in the browser and stores it as avatars/<uid>/avatar.webp. */
+export async function uploadAvatar(file: File): Promise<boolean> {
+  const { userId } = useAccount.getState()
+  if (!userId) return false
+  const bad = checkAvatarFile(file)
+  if (bad) {
+    fail(`avatar_${bad}`)
+    return false
+  }
+  useAccount.setState({ error: null })
+  try {
+    const blob = await resizeAvatar(file)
+    const sb = await client()
+    const path = `${userId}/avatar.webp`
+    const up = await sb.storage.from('avatars').upload(path, blob, { upsert: true, contentType: 'image/webp', cacheControl: '3600' })
+    if (up.error) throw up.error
+    const url = sb.storage.from('avatars').getPublicUrl(path).data.publicUrl
+    // version suffix so browsers show the new photo instead of a cached one
+    return await updateProfile({ avatar_url: `${url}?v=${Date.now()}` })
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : ''
+    fail(msg === 'tooBig' || msg === 'unreadable' ? `avatar_${msg}` : e)
+    return false
+  }
+}
+
+export async function removeAvatar(): Promise<boolean> {
+  const { userId } = useAccount.getState()
+  if (!userId) return false
+  try {
+    const sb = await client()
+    await sb.storage.from('avatars').remove([`${userId}/avatar.webp`])
+    return await updateProfile({ avatar_url: null })
+  } catch (e) {
+    fail(e)
+    return false
+  }
 }

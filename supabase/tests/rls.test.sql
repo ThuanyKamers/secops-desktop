@@ -76,4 +76,23 @@ do $$ begin
   assert (select count(*) from auth.users) = 2, 'deleting an account removes only that account';
 end $$;
 
+-- ---- profile photos ----
+set role authenticated;
+set request.jwt.claim.sub = '11111111-1111-1111-1111-111111111111';
+insert into storage.objects (bucket_id, name) values ('avatars', '11111111-1111-1111-1111-111111111111/avatar.webp');
+update public.profiles set avatar_url = 'https://secdwzevrkspozkaehgt.supabase.co/storage/v1/object/public/avatars/11111111-1111-1111-1111-111111111111/avatar.webp?v=1';
+select pg_temp.expect_error($q$insert into storage.objects (bucket_id, name) values ('avatars', '22222222-2222-2222-2222-222222222222/avatar.webp')$q$, 'uploading into another player''s folder');
+select pg_temp.expect_error($q$insert into storage.objects (bucket_id, name) values ('avatars', 'avatar.webp')$q$, 'uploading outside a player folder');
+select pg_temp.expect_error($q$update public.profiles set avatar_url = 'https://evil.example/pixel.gif'$q$, 'an avatar URL outside the project');
+select pg_temp.expect_error($q$update public.profiles set avatar_url = 'https://secdwzevrkspozkaehgt.supabase.co/storage/v1/object/public/avatars/22222222-2222-2222-2222-222222222222/avatar.webp'$q$, 'pointing your avatar at another player''s photo');
+reset role;
+set role anon;
+reset request.jwt.claim.sub;
+select pg_temp.expect_error($q$insert into storage.objects (bucket_id, name) values ('avatars', '11111111-1111-1111-1111-111111111111/x.webp')$q$, 'anonymous upload');
+do $$ begin
+  assert (select avatar_url from public.leaderboard() where username = 'thuany') like '%/avatars/11111111-%', 'leaderboard returns the photo';
+  assert (select file_size_limit from storage.buckets where id = 'avatars') = 204800, 'bucket limits photos to 200 KB';
+end $$;
+reset role;
+
 \echo 'All database security tests passed.'

@@ -147,6 +147,7 @@ textarea { resize: vertical; width: 100%; }
 .login-user { font-size: 18px; font-weight: 600; }
 .login-hint { font-size: 12px; opacity: 0.85; margin: 0; text-align: center; }
 .login-box { width: min(340px, 100%); }
+.avatar.photo { object-fit: cover; padding: 0; }
 .avatar.initials { font-size: 26px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #ec4899, #6366f1); }
 .login-or { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 12px; opacity: 0.8; }
 .login-or::before, .login-or::after { content: ''; flex: 1; height: 1px; background: #fff5; }

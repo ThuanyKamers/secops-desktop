@@ -201,6 +201,16 @@ export const ui = {
     signOut: "Sair",
     delete: "Excluir conta",
     confirmDelete: "Clique de novo para excluir sua conta e todos os seus dados",
+    photoChange: "Trocar foto",
+    photoRemove: "Remover foto",
+    photoHint: "PNG, JPG ou WebP de até 5 MB",
+    photoUploading: "Enviando…",
+    photoSignIn: "Entre na sua conta para adicionar uma foto",
+    avatarErr: {
+      type: "Use uma imagem PNG, JPG, WebP ou GIF.",
+      tooBig: "A imagem é grande demais. Escolha uma de até 5 MB.",
+      unreadable: "Não foi possível ler essa imagem. Tente outro arquivo.",
+    },
   },
   ranking: {
     signIn: "Entre na sua conta no perfil acima para aparecer no ranking.",
