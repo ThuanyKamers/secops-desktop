@@ -1,11 +1,10 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { MISSIONS } from '../content'
 import { BADGES, MISSION_XP } from '../core/progress'
+import sql from '../../supabase/migrations/0001_players.sql?raw'
 
 // The database keeps its own copy of the mission and badge catalogue (used to validate
 // scores and compute the ranking). These tests fail if the two drift apart.
-const sql = readFileSync(new URL('../../supabase/migrations/0001_players.sql', import.meta.url), 'utf8')
 
 describe('database catalogue', () => {
   it('lists every mission with the right max score and XP', () => {
