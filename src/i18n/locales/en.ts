@@ -201,6 +201,16 @@ export const ui = {
     signOut: "Sign out",
     delete: "Delete account",
     confirmDelete: "Click again to delete your account and all your data",
+    photoChange: "Change photo",
+    photoRemove: "Remove photo",
+    photoHint: "PNG, JPG or WebP up to 5 MB",
+    photoUploading: "Uploading…",
+    photoSignIn: "Sign in to add a photo",
+    avatarErr: {
+      type: "Use a PNG, JPG, WebP or GIF image.",
+      tooBig: "The image is too large. Pick one under 5 MB.",
+      unreadable: "Could not read this image. Try another file.",
+    },
   },
   ranking: {
     signIn: "Sign in on the profile above to appear in the ranking.",

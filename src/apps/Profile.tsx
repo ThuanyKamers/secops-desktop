@@ -6,6 +6,8 @@ import { BADGES, BADGE_XP, LEVELS, playerStats } from '../core/progress'
 import {
   USERNAME_RE,
   deleteAccount,
+  removeAvatar,
+  uploadAvatar,
   fetchLeaderboard,
   signInWithEmail,
   signInWithGitHub,
@@ -28,6 +30,42 @@ function fmtDuration(sec: number) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
+function AvatarPicker({ fallback }: { fallback: string }) {
+  const { t } = useTranslation()
+  const { status, profile } = useAccount()
+  const [busy, setBusy] = useState(false)
+  const url = profile?.avatar_url
+  const face = url ? <img src={url} alt="" /> : <span aria-hidden>{fallback}</span>
+  if (status !== 'signedIn') return <div className="pf-avatar" title={t('account.photoSignIn')}>{face}</div>
+  return (
+    <div className="pf-avatar-wrap">
+      <label className={`pf-avatar editable ${busy ? 'busy' : ''}`} title={t('account.photoChange')}>
+        {face}
+        <span className="pf-avatar-edit" aria-hidden>📷</span>
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          className="visually-hidden"
+          aria-label={t('account.photoChange')}
+          disabled={busy}
+          onChange={async (e) => {
+            const f = e.target.files?.[0]
+            e.target.value = ''
+            if (!f) return
+            setBusy(true)
+            await uploadAvatar(f)
+            setBusy(false)
+          }}
+        />
+      </label>
+      {url && !busy && (
+        <button className="link small" onClick={async () => { setBusy(true); await removeAvatar(); setBusy(false) }}>{t('account.photoRemove')}</button>
+      )}
+      <span className="muted small pf-photo-hint">{busy ? t('account.photoUploading') : t('account.photoHint')}</span>
+    </div>
+  )
+}
+
 function AccountCard() {
   const { t } = useTranslation()
   const { status, profile, error, emailSent, syncing } = useAccount()
@@ -35,7 +73,7 @@ function AccountCard() {
   const [username, setUsername] = useState('')
   const [editing, setEditing] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const errText = error === 'username_taken' ? t('account.usernameTaken') : error
+  const errText = error === 'username_taken' ? t('account.usernameTaken') : error?.startsWith('avatar_') ? t(`account.${error.replace('avatar_', 'avatarErr.')}`) : error
 
   if (status === 'loading') return <section className="account-card muted small">{t('account.loading')}</section>
 
@@ -114,7 +152,10 @@ function Ranking() {
             {rows.map((r) => (
               <tr key={r.username} className={r.username === profile?.username ? 'me' : ''}>
                 <td>{r.rank}</td>
-                <td>{r.display_name || r.username} <span className="muted small">@{r.username}</span></td>
+                <td className="rk-player">
+                  {r.avatar_url ? <img className="rk-avatar" src={r.avatar_url} alt="" loading="lazy" /> : <span className="rk-avatar" aria-hidden>{initials(r.display_name || r.username)}</span>}
+                  {r.display_name || r.username} <span className="muted small">@{r.username}</span>
+                </td>
                 <td>{r.xp}</td>
                 <td>{r.missions}</td>
                 <td>{r.badges}</td>
@@ -140,7 +181,7 @@ export function Profile() {
   return (
     <div className="app profile-app">
       <header className="pf-head">
-        <div className="pf-avatar" aria-hidden>{initials(name || t('profile.defaultName'))}</div>
+        <AvatarPicker fallback={initials(name || t('profile.defaultName'))} />
         <div className="pf-id">
           <input
             className="pf-name"
